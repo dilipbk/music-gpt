@@ -2,177 +2,129 @@
 
 import Modal from "@/components/common/modal";
 import Text from "@/components/common/Text";
-import Image from "next/image";
-import { useState } from "react";
 import PriceBox from "./PriceBox";
 import Tooltip from "../common/Tooltip";
 import Button from "../common/Button";
 import PricingSummary from "./PricingSummary";
+import { usePathname, useRouter } from "next/navigation";
+import { useState } from "react";
+import useDevice from "@/hooks/useDevice";
+import { Plan } from "./types";
+import clsx from "clsx";
+import Icon from "../common/icon";
 
-const PricingModal = () => {
-  const [open, setOpen] = useState<boolean>(false);
-  const [selectedPlan, setSelectedPlan] = useState<string>("pro");
+export type SelectedPlanProps = "pro" | "plus" | "ultra";
+
+const PricingModal = ({
+  searchParams,
+  data = [],
+  error,
+}: {
+  searchParams: { [key: string]: string | string[] };
+  data: Plan[];
+  error: string;
+}) => {
+  const open = searchParams.dialog === "pricing";
+  const [selectedPlan, setSelectedPlan] = useState<SelectedPlanProps>("plus");
+  const [selectedFeature, setSelectedFeature] = useState<number | null>(null);
+  const router = useRouter();
+
+  const pathname = usePathname();
+  const handleCloseModal = () => {
+    router.push(pathname, { scroll: false });
+  };
+
+  const currentPlan = data?.find((plan) => plan.name === selectedPlan);
+
+  const { isMobile } = useDevice();
+
   return (
     <div>
-      <h1>This is pricing</h1>
-      <button onClick={() => setOpen(true)}>Click me</button>
       <Modal
         bodyClasses="!px-0 !py-0"
         isOpen={open}
-        onClose={() => setOpen(false)}
-        hasDismiss={false}
+        onClose={handleCloseModal}
+        hasDismiss={isMobile}
       >
-        <div className="flex flex-col md:flex-row rounded-[28px] overflow-hidden bg-[#16191C]">
-          <div className="basis-1/2 w-1/2 hidden md:block relative z-10">
-            <PricingSummary />
-          </div>
-          <div className="flex flex-col gap-8 py-12 px-8 basis-1/2 w-full md:w-1/2 relative z-20 bg-[#16191C]">
-            <Text size="xl">Unlock the future of music.</Text>
-            <form className="flex flex-col gap-8">
-              <div className="pricing-plans flex gap-3">
-                <label htmlFor="plus" className="grow cursor-pointer">
-                  <input
-                    hidden
-                    type="radio"
-                    id="plus"
-                    name="plan"
-                    value="plus"
-                    onChange={(e) => setSelectedPlan(e.target.value)}
-                  />
-                  <PriceBox text="Plus" isActive={selectedPlan === "plus"} />
-                </label>
-                <label htmlFor="pro" className="grow cursor-pointer">
-                  <input
-                    hidden
-                    type="radio"
-                    id="pro"
-                    name="plan"
-                    value="pro"
-                    onChange={(e) => setSelectedPlan(e.target.value)}
-                  />
-                  <PriceBox
-                    text="Pro"
-                    isPopular={true}
-                    isActive={selectedPlan === "pro"}
-                  />
-                </label>
-                <label htmlFor="ultra" className="grow cursor-pointer">
-                  <input
-                    hidden
-                    type="radio"
-                    id="ultra"
-                    name="plan"
-                    value="ultra"
-                    onChange={(e) => setSelectedPlan(e.target.value)}
-                  />
-                  <PriceBox text="Ultra" isActive={selectedPlan === "ultra"} />
-                </label>
-              </div>
-              <ul className="plan-detail space-y-2">
-                <li className="flex items-center gap-2">
-                  <Image
-                    src="/images/check.png"
-                    width={13}
-                    height={12}
-                    alt="list marker"
-                  />
-                  <Text size="sm" className="!font-medium">
-                    Generate 6000 songs /year
-                  </Text>
-                  <Tooltip description="Generate 6000 songs /year">
-                    <Image
-                      src="/images/info-circle.png"
-                      className="cursor-pointer"
-                      width={15}
-                      height={15}
-                      alt="tooltip"
-                    />
-                  </Tooltip>
-                </li>
-                <li className="flex items-center gap-2">
-                  <Image
-                    src="/images/check.png"
-                    width={13}
-                    height={12}
-                    alt="list marker"
-                  />
-                  <Text size="sm" className="!font-medium">
-                    Unlimited downloads
-                  </Text>
-                  <Tooltip description="Unlimited downloads">
-                    <Image
-                      src="/images/info-circle.png"
-                      className="cursor-pointer"
-                      width={15}
-                      height={15}
-                      alt="tooltip"
-                    />
-                  </Tooltip>
-                </li>
-                <li className="flex items-center gap-2">
-                  <Image
-                    src="/images/check.png"
-                    width={13}
-                    height={12}
-                    alt="list marker"
-                  />
-                  <Text size="sm" className="!font-medium">
-                    Unlock all features
-                  </Text>
-                  <Tooltip description="Unlock all features">
-                    <Image
-                      src="/images/info-circle.png"
-                      className="cursor-pointer"
-                      width={15}
-                      height={15}
-                      alt="tooltip"
-                    />
-                  </Tooltip>
-                </li>
-                <li className="flex items-center gap-2">
-                  <Image
-                    src="/images/check.png"
-                    width={13}
-                    height={12}
-                    alt="list marker"
-                  />
-                  <Text size="sm" className="!font-medium">
-                    Fast generation
-                  </Text>
-                  <Tooltip description="Fast generation">
-                    <Image
-                      src="/images/info-circle.png"
-                      className="cursor-pointer"
-                      width={15}
-                      height={15}
-                      alt="tooltip"
-                    />
-                  </Tooltip>
-                </li>
-                <li className="flex items-center gap-2">
-                  <Image
-                    src="/images/check.png"
-                    width={13}
-                    height={12}
-                    alt="list marker"
-                  />
-                  <Text size="sm" className="!font-medium">
-                    Commercial use
-                  </Text>
-                  <Tooltip description="Commercial use">
-                    <Image
-                      src="/images/info-circle.png"
-                      className="cursor-pointer"
-                      width={15}
-                      height={15}
-                      alt="tooltip"
-                    />
-                  </Tooltip>
-                </li>
-              </ul>
-              <div>
-                <div className="price">
-                  <Text size="xl">$16.99</Text>
+        {!!data?.length && (
+          <div className="flex flex-col md:flex-row rounded-[28px] overflow-hidden h-screen md:h-auto bg-[#16191C]">
+            <div className="basis-1/2 w-1/2 hidden md:block relative z-10">
+              <PricingSummary
+                selectedIndex={selectedFeature}
+                selectedPlan={selectedPlan}
+              />
+            </div>
+            <div className="flex flex-col gap-8 py-12 px-8 basis-full md:basis-1/2 w-full md:w-1/2 relative z-20 bg-[#16191C]">
+              <Text size="xl">Unlock the future of music.</Text>
+              <form className="flex flex-col gap-8 h-full md:h-auto">
+                <div className="pricing-plans flex gap-3">
+                  {data?.map(({ id, name, displayName, isPopular }) => (
+                    <label
+                      key={id}
+                      htmlFor={name}
+                      className="grow cursor-pointer"
+                    >
+                      <input
+                        hidden
+                        type="radio"
+                        id={name}
+                        name="plan"
+                        value={name}
+                        onChange={(e) =>
+                          setSelectedPlan(e.target.value as SelectedPlanProps)
+                        }
+                      />
+                      <PriceBox
+                        text={displayName}
+                        isActive={selectedPlan === name}
+                        isPopular={isPopular}
+                      />
+                    </label>
+                  ))}
+                </div>
+
+                <ul className="plan-detail space-y-2">
+                  {currentPlan?.features?.map((feat, idx) => (
+                    <li
+                      onClick={() => setSelectedFeature(idx)}
+                      key={idx}
+                      className={clsx("flex items-center gap-2 cursor-pointer")}
+                    >
+                      <Icon
+                        name="check"
+                        width={13}
+                        height={12}
+                        className={clsx(
+                          selectedFeature === null || selectedFeature === idx
+                            ? "opacity-100"
+                            : "opacity-60"
+                        )}
+                      />
+                      <Text
+                        size="sm"
+                        className={clsx(
+                          "!font-medium",
+                          selectedFeature === null || selectedFeature === idx
+                            ? "opacity-100"
+                            : "opacity-60"
+                        )}
+                      >
+                        {feat}
+                      </Text>
+                      <Tooltip description={feat}>
+                        <Icon
+                          name="infocircle"
+                          className="cursor-pointer"
+                          width={15}
+                          height={15}
+                        />
+                      </Tooltip>
+                    </li>
+                  ))}
+                </ul>
+
+                <div className="price grow md:grow-0">
+                  <Text size="xl">{currentPlan?.price}</Text>
                   <Text
                     size="sm"
                     className="text-primary-800 !font-medium !leading-[150%] mt-2"
@@ -180,16 +132,23 @@ const PricingModal = () => {
                     USD per month, billed yearly
                   </Text>
 
-                  <Button size="lg" className="w-full mt-4">
-                    <Text className="font-semibold !text-primary">
-                      Unlock Pro features →
-                    </Text>
-                  </Button>
+                  <div className="mt-4 content-end md:content-starth-[80%] md:h-auto">
+                    <Button size="lg" className="w-full">
+                      <Text className="font-semibold !text-primary">
+                        Unlock Pro features →
+                      </Text>
+                    </Button>
+                  </div>
                 </div>
-              </div>
-            </form>
+              </form>
+            </div>
           </div>
-        </div>
+        )}
+        {error && (
+          <div className="flex items-center justify-center h-screen md:h-[500px] bg-[#16191C] rounded-3xl">
+            <Text>{error}</Text>
+          </div>
+        )}
       </Modal>
     </div>
   );

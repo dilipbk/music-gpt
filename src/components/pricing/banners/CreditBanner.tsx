@@ -1,8 +1,9 @@
 import Text from "@/components/common/Text";
 import Image from "next/image";
 import React, { useEffect, useState } from "react";
+import { SelectedPlanProps } from "../PricingModal";
 
-const CreditBanner = () => {
+const CreditBanner = ({ plan }: { plan: SelectedPlanProps }) => {
   const typewriters = ["Create anything", "Create stunning"];
 
   const [text, setText] = useState("");
@@ -49,7 +50,11 @@ const CreditBanner = () => {
       <div className="relative z-20 h-full flex flex-col justify-evenly items-center py-12 px-8">
         <div className="text-center summary animate-fade-in">
           <Text size="lg" className="font-medium text-white">
-            Get 5K credits /month
+            {plan === "plus"
+              ? "Get 5K credits /month"
+              : plan === "pro"
+              ? "Get 25K credits /month"
+              : "∞ Unlimited credits"}
           </Text>
 
           <Text className="!text-primary-800/80 mt-4 !leading-6">

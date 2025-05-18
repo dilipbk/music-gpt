@@ -1,17 +1,25 @@
 import React, { ReactNode } from "react";
 import Text from "../common/Text";
+import clsx from "clsx";
 
 const FeatureBox = ({
   title,
   description,
   icon,
+  className,
+  style,
 }: {
   title: string;
   description: string;
   icon: ReactNode;
+  className?: string;
+  style?: React.CSSProperties;
 }) => {
   return (
-    <div className="flex items-center gap-3">
+    <div
+      className={clsx("flex items-center gap-3 animate-fade-in", className)}
+      style={style}
+    >
       <div className="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center">
         {icon}
       </div>

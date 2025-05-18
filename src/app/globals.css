@@ -6,8 +6,11 @@
   --primary: #000;
   --primary-100: #16191c;
   --primary-300: #262a2e;
+  --primary-700: #505458;
   --primary-800: #bfc2c8;
   --primary-900: #e4e6e8;
+
+  --animation-delay: 0;
 }
 
 @theme inline {
@@ -17,6 +20,7 @@
   --color-primary: var(--primary);
   --color-primary-100: var(--primary-100);
   --color-primary-300: var(--primary-300);
+  --color-primary-700: var(--primary-700);
   --color-primary-800: var(--primary-800);
   --color-primary-900: var(--primary-900);
 
