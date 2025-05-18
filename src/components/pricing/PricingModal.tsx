@@ -6,8 +6,8 @@ import PriceBox from "./PriceBox";
 import Tooltip from "../common/Tooltip";
 import Button from "../common/Button";
 import PricingSummary from "./PricingSummary";
-import { usePathname, useRouter } from "next/navigation";
-import { useState } from "react";
+import { redirect, usePathname, useRouter } from "next/navigation";
+import { FormEvent, useState } from "react";
 import useDevice from "@/hooks/useDevice";
 import { Plan } from "./types";
 import clsx from "clsx";
@@ -27,11 +27,23 @@ const PricingModal = ({
   const open = searchParams.dialog === "pricing";
   const [selectedPlan, setSelectedPlan] = useState<SelectedPlanProps>("plus");
   const [selectedFeature, setSelectedFeature] = useState<number | null>(null);
+  const [redirecting, setRedirecting] = useState<boolean>(false);
   const router = useRouter();
 
   const pathname = usePathname();
   const handleCloseModal = () => {
     router.push(pathname, { scroll: false });
+  };
+
+  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
+    setRedirecting(true);
+    const timer = setTimeout(() => {
+      setRedirecting(false);
+      clearTimeout(timer);
+    }, 500);
+
+    e.preventDefault();
+    redirect("https://www.musicgpt.com");
   };
 
   const currentPlan = data?.find((plan) => plan.name === selectedPlan);
@@ -56,7 +68,10 @@ const PricingModal = ({
             </div>
             <div className="flex flex-col gap-8 py-12 px-8 basis-full md:basis-1/2 w-full md:w-1/2 relative z-20 bg-[#16191C]">
               <Text size="xl">Unlock the future of music.</Text>
-              <form className="flex flex-col gap-8 h-full md:h-auto">
+              <form
+                onSubmit={handleSubmit}
+                className="flex flex-col gap-8 h-full md:h-auto"
+              >
                 <div className="pricing-plans flex gap-3">
                   {data?.map(({ id, name, displayName, isPopular }) => (
                     <label
@@ -133,9 +148,16 @@ const PricingModal = ({
                   </Text>
 
                   <div className="mt-4 content-end md:content-starth-[80%] md:h-auto">
-                    <Button size="lg" className="w-full">
+                    <Button
+                      disabled={redirecting}
+                      type="submit"
+                      size="lg"
+                      className={clsx("w-full", redirecting && "opacity-45")}
+                    >
                       <Text className="font-semibold !text-primary">
-                        Unlock Pro features →
+                        {redirecting
+                          ? "Redirecting..."
+                          : `Unlock ${currentPlan?.displayName} features →`}
                       </Text>
                     </Button>
                   </div>
