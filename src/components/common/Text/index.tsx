@@ -27,7 +27,11 @@ const Text: React.FC<TextProps> = ({
 }) => {
   const Tag = tagMap[size];
   const classes = `${sizeClasses[size]} ${className}`.trim();
-  return <Tag className={clsx(classes, className)}>{children}</Tag>;
+  return (
+    <Tag className={clsx("text-primary-900", classes, className)}>
+      {children}
+    </Tag>
+  );
 };
 
 export default Text;

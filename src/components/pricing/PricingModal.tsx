@@ -7,6 +7,7 @@ import { useState } from "react";
 import PriceBox from "./PriceBox";
 import Tooltip from "../common/Tooltip";
 import Button from "../common/Button";
+import PricingSummary from "./PricingSummary";
 
 const PricingModal = () => {
   const [open, setOpen] = useState<boolean>(false);
@@ -22,15 +23,10 @@ const PricingModal = () => {
         hasDismiss={false}
       >
         <div className="flex flex-col md:flex-row rounded-[28px] overflow-hidden bg-[#16191C]">
-          <div className="basis-1/2 hidden md:block">
-            <Image
-              src="/images/limitless-banner.png"
-              alt="banner"
-              width={400}
-              height={600}
-            />
+          <div className="basis-1/2 w-1/2 hidden md:block relative z-10">
+            <PricingSummary />
           </div>
-          <div className="flex flex-col gap-8 py-12 px-8 basis-1/2">
+          <div className="flex flex-col gap-8 py-12 px-8 basis-1/2 w-full md:w-1/2 relative z-20 bg-[#16191C]">
             <Text size="xl">Unlock the future of music.</Text>
             <form className="flex flex-col gap-8">
               <div className="pricing-plans flex gap-3">
@@ -179,13 +175,15 @@ const PricingModal = () => {
                   <Text size="xl">$16.99</Text>
                   <Text
                     size="sm"
-                    className="text-[#BFC2C8] !font-medium !leading-[150%] mt-2"
+                    className="text-primary-800 !font-medium !leading-[150%] mt-2"
                   >
                     USD per month, billed yearly
                   </Text>
 
                   <Button size="lg" className="w-full mt-4">
-                    <Text className="font-semibold">Unlock Pro features →</Text>
+                    <Text className="font-semibold !text-primary">
+                      Unlock Pro features →
+                    </Text>
                   </Button>
                 </div>
               </div>

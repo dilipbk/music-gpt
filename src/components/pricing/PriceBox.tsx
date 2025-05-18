@@ -16,7 +16,7 @@ const PriceBox = ({
     <div
       className={clsx(
         "text-center relative py-3 px-4 h-[50px] rounded-md border flex items-center justify-center",
-        !isActive ? "border-[#3A3E42]" : "border-white"
+        !isActive ? "border-[#3A3E42]" : "border-white outline-1 outline-white"
       )}
     >
       {isPopular && (
@@ -24,7 +24,14 @@ const PriceBox = ({
           <Badge text="Popular" />
         </div>
       )}
-      <Text className="font-semibold">{text}</Text>
+      <Text
+        className={clsx(
+          "font-semibold",
+          isActive ? "!text-primary-900" : "!text-primary-800"
+        )}
+      >
+        {text}
+      </Text>
     </div>
   );
 };

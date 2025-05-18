@@ -3,12 +3,22 @@
 :root {
   --background: #ffffff;
   --foreground: #171717;
+  --primary: #000;
+  --primary-100: #16191c;
+  --primary-300: #262a2e;
+  --primary-800: #bfc2c8;
+  --primary-900: #e4e6e8;
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --font-inter-sans: var(--font-inter-sans);
+  --color-primary: var(--primary);
+  --color-primary-100: var(--primary-100);
+  --color-primary-300: var(--primary-300);
+  --color-primary-800: var(--primary-800);
+  --color-primary-900: var(--primary-900);
 
   --animate-pop: pop 100ms ease-in 1;
 
@@ -59,4 +69,80 @@ body {
   border-left: 5px solid transparent;
   border-right: 5px solid transparent;
   border-bottom: 10px solid #000;
+}
+
+.typewriter::after {
+  position: absolute;
+  content: "";
+}
+
+.cursor {
+  animation: blink 1s steps(2, start) infinite;
+}
+
+@keyframes blink {
+  to {
+    opacity: 0;
+  }
+}
+
+@keyframes slide-in-right {
+  from {
+    opacity: 0;
+    transform: translateX(100px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.animate-slide-in-right {
+  animation: slide-in-right 0.8s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+
+.animate-fade-in {
+  animation: fade-in 1s ease forwards;
+}
+
+.social-container::after,
+.social-container::before {
+  position: absolute;
+  content: "";
+  width: 80px;
+  height: 100%;
+  top: 0;
+  bottom: 0;
+}
+
+.social-container::before {
+  left: 0;
+  background: linear-gradient(to right, #012f75, #fff0);
+}
+
+.social-container::after {
+  right: 0;
+  background: linear-gradient(to left, #012f75, #fff0);
+}
+
+.animate-slide {
+  animation: slide 20s linear infinite running normal;
+}
+
+@keyframes slide {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-100%);
+  }
 }
